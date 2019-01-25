@@ -1,0 +1,8 @@
+################### Errlogbeat Configuration Example #########################
+
+############################# Errlogbeat ######################################
+
+errlogbeat:
+  # The registry_file defines where Errlogbeat persists its state.
+  # This defaults to .errlogbeat.yml in the current working directory.
+  #registry_file: .errlogbeat.yml

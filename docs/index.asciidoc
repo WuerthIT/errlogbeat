@@ -1,0 +1,5 @@
+= Errlogbeat Docs
+
+Welcome to the Errlogbeat documentation.
+
+
