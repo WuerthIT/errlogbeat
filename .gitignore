@@ -1,0 +1,15 @@
+/.idea
+/build
+
+.DS_Store
+/errlogbeat
+/errlogbeat.test
+*.pyc
+
+/fields.yml
+_meta/kibana/*/index-pattern
+*.generated.yml
+
+*.errlogbeat.yml
+
+.*.swp
