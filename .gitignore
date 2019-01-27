@@ -8,6 +8,7 @@
 
 /fields.yml
 _meta/kibana/*/index-pattern
+*.dev.yml
 *.generated.yml
 
 *.errlogbeat.yml

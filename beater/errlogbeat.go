@@ -70,18 +70,18 @@ func (bt *Errlogbeat) Run(b *beat.Beat) error {
 		return err
 	}
 
-	persistedState := bt.checkpoint.States()
-
-	var start_sequence int
-	if state, ok := persistedState[errlogfile]; ok {
-		start_sequence = int(state.RecordNumber)
-	} else {
-		start_sequence = -1
-	}
-
-	er, err := errlog.NewErrlogReader(start_sequence)
+	er, err := errlog.NewErrlogReader()
 	if err != nil {
 		return err
+	}
+
+	persistedState := bt.checkpoint.States()
+
+	if state, ok := persistedState[errlogfile]; ok {
+		err = er.FindSequence(state.RecordNumber)
+		if err != nil {
+			return err
+		}
 	}
 
 	trigger := make(chan os.Signal, 1)
@@ -94,26 +94,13 @@ func (bt *Errlogbeat) Run(b *beat.Beat) error {
 		default:
 		}
 
-		if el, err := er.GetNext(); err == nil {
-			if el != nil {
-				timestamp := time.Unix(int64(el.Timestamp), 0)
-				event := beat.Event{
-					Timestamp: timestamp,
-					Fields: common.MapStr{
-						"system": common.MapStr{
-							"errlog": el,
-						},
-					},
-					Private: checkpoint.EventLogState{
-						Name:         "errlog",
-						RecordNumber: uint64(el.Sequence),
-						Timestamp:    timestamp,
-					},
+		if events, err := er.Read(); err == nil {
+			if len(events) > 0 {
+				for _, event := range events {
+					bt.client.Publish(event)
+					logp.Info("Event sent")
 				}
-				bt.client.Publish(event)
-				logp.Info("Event sent")
 			} else {
-				logp.Debug("errlogbeat", "Going to sleep.")
 				select {
 				case <-bt.done:
 					return nil
