@@ -3,10 +3,18 @@
 
 package config
 
+import (
+	"time"
+)
+
 type Config struct {
-	RegistryFile string `config:"registry_file"`
+	RegistryFile    string        `config:"registry_file"`
+	Once            bool          `config:"once"`
+	PollingInterval time.Duration `config:"polling_interval" validate:"min=0,nonzero"`
 }
 
 var DefaultConfig = Config{
-	RegistryFile: ".errlogbeat.yml",
+	RegistryFile:    ".errlogbeat.yml",
+	Once:            false,
+	PollingInterval: 15 * time.Second,
 }

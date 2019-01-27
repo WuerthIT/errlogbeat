@@ -101,11 +101,16 @@ func (bt *Errlogbeat) Run(b *beat.Beat) error {
 					logp.Info("Event sent")
 				}
 			} else {
+				if bt.config.Once {
+					logp.Debug("errlogbeat", "No more entries.")
+					return nil
+				}
 				select {
 				case <-bt.done:
 					return nil
 				case <-trigger:
 					logp.Debug("errlogbeat", "Awakened by signal.")
+				case <-time.After(bt.config.PollingInterval):
 				}
 			}
 		} else {
