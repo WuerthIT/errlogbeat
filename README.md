@@ -1,44 +1,33 @@
 # Errlogbeat
 
-Welcome to Errlogbeat.
-
-Ensure that this folder is at the following location:
-`${GOPATH}/src/github.com/WuerthIT/errlogbeat`
+Errlogbeat collects entries from the error log of the AIX operating system and ships them to Elasticsearch or Logstash.
 
 ## Getting Started with Errlogbeat
 
 ### Requirements
 
-* [Golang](https://golang.org/dl/) 1.7
+#### Build Requirements
 
-### Init Project
-To get running with Errlogbeat and also install the
-dependencies, run the following command:
+- An AIX operating system instance. I'm using version 7.1. Support for Go should be even better on version 7.2 but I haven't try it yet.
+- A recent version of `gcc-go` and its dependencies. I'm using the packages kindly provided by [BullFreeware](http://www.bullfreeware.com/search.php?package=gcc-go).
+- Various open source packages, at least GNU `make`. Some tasks also require `find-utils` and Python. I'm using the packages kindly provided by [Michael Perzl](http://www.perzl.org/aix/).
 
-```
-make setup
-```
+#### Runtime Requirements
 
-It will create a clean git history for each major step. Note that you can always rewrite the history if you wish before pushing your changes.
-
-To push Errlogbeat in the git repository, run the following commands:
-
-```
-git remote set-url origin https://github.com/WuerthIT/errlogbeat
-git push origin master
-```
-
-For further development, check out the [beat developer guide](https://www.elastic.co/guide/en/beats/libbeat/current/new-beat.html).
+- `libgo` should be the same as in the build environment.
+- `libgcc`, not necessarily at the same level or from the same source like `libgo`.
 
 ### Build
+
+Ensure that this folder is at the following location:
+`${GOPATH}/src/github.com/WuerthIT/errlogbeat`
 
 To build the binary for Errlogbeat run the command below. This will generate a binary
 in the same directory with the name errlogbeat.
 
 ```
-make
+gmake
 ```
-
 
 ### Run
 
@@ -47,25 +36,6 @@ To run Errlogbeat with debugging output enabled, run:
 ```
 ./errlogbeat -c errlogbeat.yml -e -d "*"
 ```
-
-
-### Test
-
-To test Errlogbeat, run the following command:
-
-```
-make testsuite
-```
-
-alternatively:
-```
-make unit-tests
-make system-tests
-make integration-tests
-make coverage-report
-```
-
-The test coverage is reported in the folder `./build/coverage/`
 
 ### Update
 
@@ -76,10 +46,9 @@ which is automatically generated based on `fields.yml` by running the following 
 make update
 ```
 
-
 ### Cleanup
 
-To clean  Errlogbeat source code, run the following commands:
+To clean Errlogbeat source code, run the following commands:
 
 ```
 make fmt
@@ -92,26 +61,18 @@ To clean up the build directory and generated artifacts, run:
 make clean
 ```
 
+## Vendoring
 
-### Clone
-
-To clone Errlogbeat from the git repository, run the following commands:
-
-```
-mkdir -p ${GOPATH}/src/github.com/WuerthIT/errlogbeat
-git clone https://github.com/WuerthIT/errlogbeat ${GOPATH}/src/github.com/WuerthIT/errlogbeat
-```
-
-
-For further development, check out the [beat developer guide](https://www.elastic.co/guide/en/beats/libbeat/current/new-beat.html).
-
+Errlogbeat currently includes version 6.2.4 of beats in the `vendor` subfolder with [some minor modifications](https://github.com/WuerthIT/beats/releases/tag/v6.2.4-support_aix) on libraries inside their `vendor` directory. Later versions make use of Go modules that are not available on the AIX operation system currently.
 
 ## Packaging
 
-The beat frameworks provides tools to crosscompile and package your beat for different platforms. This requires [docker](https://www.docker.com/) and vendoring as described above. To build packages of your beat, run the following command:
+The original packaging process makes use of containers and will obviously not work here. So currently the binary file has to be distributed manually. Maybe an RPM spec file will be provided later.
 
-```
-make package
-```
+## Disclaimer
 
-This will fetch and create all images required for the build process. The hole process to finish can take several minutes.
+AIX is a registered trademark of the International Business Machines Corporation.
+
+Elasticsearch and Logstash are trademarks of Elasticsearch BV.
+
+Errlogbeat is not endorsed by any of these companies.
