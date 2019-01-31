@@ -2,6 +2,8 @@
 
 Errlogbeat collects entries from the error log of the AIX operating system and ships them to Elasticsearch or Logstash.
 
+![Example Image](https://raw.githubusercontent.com/WuerthIT/errlogbeat/assets/errlogbeat.png)
+
 ## Getting Started with Errlogbeat
 
 ### Requirements
