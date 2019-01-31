@@ -45,22 +45,15 @@ Each beat has a template for the mapping in elasticsearch and a documentation fo
 which is automatically generated based on `fields.yml` by running the following command.
 
 ```
-make update
+gmake update
 ```
 
 ### Cleanup
 
-To clean Errlogbeat source code, run the following commands:
-
-```
-make fmt
-make simplify
-```
-
 To clean up the build directory and generated artifacts, run:
 
 ```
-make clean
+gmake clean
 ```
 
 ## Vendoring
