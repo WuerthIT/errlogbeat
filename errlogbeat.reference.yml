@@ -7,13 +7,27 @@ errlogbeat:
   # This defaults to .errlogbeat.yml in the current working directory.
   #registry_file: .errlogbeat.yml
 
-  # By default Errlogbeat will keep running and waiting for new entries.
-  # If once is set to true, it will exit after the last entry found.
-  #once: false
+  # The checkpoint_max_updates defines the maximum number of published
+  # events before persisting the state to disk. It defaults to 10.
+  #checkpoint_max_updates: 10
+
+  # The checkpoint_interval defines the maimum time before
+  # persisting the state to disk. It defaults to 15s.
+  #checkpoint_interval: 15s
 
   # The polling_interval defines how often Errlogbeat searches for new
   # entries if it is not triggered by SIGUSR1. This defaults to 15s.
   #polling_interval: 15s
+
+  # By default Errlogbeat will keep running and waiting for new entries.
+  # If once is set to true, it will exit after the last entry found.
+  # Ensure that wait_close is set high enough for the events to be
+  # transmitted when setting this to true.
+  #once: false
+
+  # wait_close sets the maximum duration to block on shutdown when
+  # events cannot be published. It defaults to 15s.
+  #wait_close: 15s
 
 #================================ General ======================================
 

@@ -45,11 +45,6 @@ func (bt *Errlogbeat) Run(b *beat.Beat) error {
 	errlogfile := "errlog"
 
 	var err error
-	bt.checkpoint, err = checkpoint.NewCheckpoint(bt.config.RegistryFile, 10, 5*time.Second)
-	if err != nil {
-		return err
-	}
-	defer bt.checkpoint.Shutdown()
 
 	err = b.Publisher.SetACKHandler(beat.PipelineACKHandler{
 		ACKLastEvents: func(data []interface{}) {
@@ -65,10 +60,23 @@ func (bt *Errlogbeat) Run(b *beat.Beat) error {
 		return err
 	}
 
-	bt.client, err = b.Publisher.ConnectWith(beat.ClientConfig{PublishMode: beat.GuaranteedSend})
+	bt.checkpoint, err = checkpoint.NewCheckpoint(
+		bt.config.RegistryFile,
+		bt.config.CheckpointMaxUpdates,
+		bt.config.CheckpointInterval)
 	if err != nil {
 		return err
 	}
+	defer bt.checkpoint.Shutdown()
+
+	bt.client, err = b.Publisher.ConnectWith(beat.ClientConfig{
+		PublishMode: beat.GuaranteedSend,
+		WaitClose:   bt.config.WaitClose,
+	})
+	if err != nil {
+		return err
+	}
+	defer bt.client.Close()
 
 	er, err := errlog.NewErrlogReader()
 	if err != nil {

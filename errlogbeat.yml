@@ -7,13 +7,15 @@ errlogbeat:
   # This defaults to .errlogbeat.yml in the current working directory.
   #registry_file: .errlogbeat.yml
 
-  # By default Errlogbeat will keep running and waiting for new entries.
-  # If once is set to true, it will exit after the last entry found.
-  #once: false
-
   # The polling_interval defines how often Errlogbeat searches for new
   # entries if it is not triggered by SIGUSR1. This defaults to 15s.
   #polling_interval: 15s
+
+  # By default Errlogbeat will keep running and waiting for new entries.
+  # If once is set to true, it will exit after the last entry found.
+  # Ensure that wait_close is set high enough for the events to be
+  # transmitted when setting this to true.
+  #once: false
 
 #================================ General =====================================
 
