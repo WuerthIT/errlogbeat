@@ -69,9 +69,7 @@ func (entry *C.errlog_entry_t) toEvent(detail_data ...[2]string) beat.Event {
 	return beat.Event{
 		Timestamp: timestamp,
 		Fields: common.MapStr{
-			"system": common.MapStr{
-				"errlog": errlog,
-			},
+			"errlog": errlog,
 		},
 		Private: checkpoint.EventLogState{
 			Name:         "errlog",
