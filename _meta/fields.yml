@@ -1,9 +1,105 @@
 - key: errlogbeat
   title: errlogbeat
-  description:
+  description: >
+    Errlogbeat collects entries from the error log of the AIX
+    operating system and ships them to Elasticsearch or Logstash.
+
   fields:
-    - name: counter
-      type: long
-      required: true
+    - name: errlog
+      type: group
       description: >
-        PLEASE UPDATE DOCUMENTATION
+        error-log entries as described in
+        https://www.ibm.com/support/knowledgecenter/en/ssw_aix_71/com.ibm.aix.genprogc/errlogtsks.htm and
+        https://www.ibm.com/support/knowledgecenter/en/ssw_aix_71/com.ibm.aix.cmds2/errpt.htm
+
+      fields:
+        - name: magic
+          type: long
+          required: true
+        - name: sequence
+          type: long
+          required: true
+          description: Error-log stamp number
+        - name: label
+          type: keyword
+          required: true
+          description: Error label
+        - name: crcid
+          type: keyword
+          required: true
+          description: Unique cyclic-redundancy-check (CRC) error identifier
+        - name: errdiag
+          type: long
+          required: true
+        - name: machineid
+          type: keyword
+          description: Machine ID variable
+        - name: nodeid
+          type: keyword
+          required: true
+          description: Node ID variable
+        - name: class
+          type: keyword
+          required: true
+          description: Error class
+        - name: type
+          type: keyword
+          required: true
+          description: Error type
+        - name: resource
+          type: keyword
+          required: true
+          description: Resource name
+        - name: rclass
+          type: keyword
+          required: true
+          description: Resource class
+        - name: rtype
+          type: keyword
+          required: true
+          description: Resource type
+        - name: vpd_ibm
+          type: keyword
+          required: true
+          description: IBM vital product data (VPD)
+        - name: vpd_user
+          type: keyword
+          required: true
+          description: User VPD
+        - name: in
+          type: keyword
+          required: true
+          description: Location code of a device
+        - name: connwhere
+          type: keyword
+          required: true
+          description: Hardware-connection ID (location on a specific device, such as slot number)
+        - name: detail
+          type: object
+          description: Detail-data
+        - name: wparid
+          type: keyword
+        - name: flags
+          type: group
+          fields:
+            - name: err64
+              type: boolean
+              required: true
+            - name: errdup
+              type: boolean
+              required: true
+            - name: errwpar
+              type: boolean
+              required: true
+        - name: errdup
+          type: group
+          fields:
+            - name: dupcount
+              type: long
+              required: true
+            - name: time1
+              type: date
+              required: true
+            - name: time2
+              type: date
+              required: true

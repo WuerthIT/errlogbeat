@@ -209,18 +209,210 @@ Image labels.
 [[exported-fields-errlogbeat]]
 == errlogbeat fields
 
-None
+Errlogbeat collects entries from the error log of the AIX operating system and ships them to Elasticsearch or Logstash.
+
 
 
 [float]
-=== `counter`
+== errlog fields
+
+error-log entries as described in https://www.ibm.com/support/knowledgecenter/en/ssw_aix_71/com.ibm.aix.genprogc/errlogtsks.htm and https://www.ibm.com/support/knowledgecenter/en/ssw_aix_71/com.ibm.aix.cmds2/errpt.htm
+
+
+
+[float]
+=== `errlog.magic`
 
 type: long
 
 required: True
 
-PLEASE UPDATE DOCUMENTATION
+[float]
+=== `errlog.sequence`
 
+type: long
+
+required: True
+
+Error-log stamp number
+
+[float]
+=== `errlog.label`
+
+type: keyword
+
+required: True
+
+Error label
+
+[float]
+=== `errlog.crcid`
+
+type: keyword
+
+required: True
+
+Unique cyclic-redundancy-check (CRC) error identifier
+
+[float]
+=== `errlog.errdiag`
+
+type: long
+
+required: True
+
+[float]
+=== `errlog.machineid`
+
+type: keyword
+
+Machine ID variable
+
+[float]
+=== `errlog.nodeid`
+
+type: keyword
+
+required: True
+
+Node ID variable
+
+[float]
+=== `errlog.class`
+
+type: keyword
+
+required: True
+
+Error class
+
+[float]
+=== `errlog.type`
+
+type: keyword
+
+required: True
+
+Error type
+
+[float]
+=== `errlog.resource`
+
+type: keyword
+
+required: True
+
+Resource name
+
+[float]
+=== `errlog.rclass`
+
+type: keyword
+
+required: True
+
+Resource class
+
+[float]
+=== `errlog.rtype`
+
+type: keyword
+
+required: True
+
+Resource type
+
+[float]
+=== `errlog.vpd_ibm`
+
+type: keyword
+
+required: True
+
+IBM vital product data (VPD)
+
+[float]
+=== `errlog.vpd_user`
+
+type: keyword
+
+required: True
+
+User VPD
+
+[float]
+=== `errlog.in`
+
+type: keyword
+
+required: True
+
+Location code of a device
+
+[float]
+=== `errlog.connwhere`
+
+type: keyword
+
+required: True
+
+Hardware-connection ID (location on a specific device, such as slot number)
+
+[float]
+=== `errlog.detail`
+
+type: object
+
+Detail-data
+
+[float]
+=== `errlog.wparid`
+
+type: keyword
+
+
+[float]
+=== `errlog.flags.err64`
+
+type: boolean
+
+required: True
+
+[float]
+=== `errlog.flags.errdup`
+
+type: boolean
+
+required: True
+
+[float]
+=== `errlog.flags.errwpar`
+
+type: boolean
+
+required: True
+
+
+[float]
+=== `errlog.errdup.dupcount`
+
+type: long
+
+required: True
+
+[float]
+=== `errlog.errdup.time1`
+
+type: date
+
+required: True
+
+[float]
+=== `errlog.errdup.time2`
+
+type: date
+
+required: True
 
 [[exported-fields-kubernetes-processor]]
 == Kubernetes fields
